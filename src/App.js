@@ -1,8 +1,12 @@
 import './App.css';
+import Day1 from "./Day1";
 
-function App() {
+const App = () => {
   return (
-    <h1>Advent of Code 2021</h1>
+      <>
+        <h1>Advent of Code 2021</h1>
+        <Day1 title="Sonar Sweep" />
+      </>
   );
 }
 
