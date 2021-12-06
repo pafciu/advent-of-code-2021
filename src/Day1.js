@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 
 const Day1 = ({title}) => {
-    const [measurements, setMeasurements] = useState(-1);
+    const [increases, setIncreases] = useState(-1);
+    const [windows, setWindows] = useState(-1);
     const [error, setError] = useState(null);
     const [loaded, setLoaded] = useState(false);
 
@@ -10,20 +11,27 @@ const Day1 = ({title}) => {
             .then(res => res.text())
             .then(
                 res => {
-                    setLoaded(true);
-                    const depths = res.split('\n');
-                    const meas = depths.reduce((prev, curr, idx, arr) => {
-                        if (idx === 0) {
-                            return {depth: parseInt(curr), meas: 0};
-                        } else {
-                            return {depth: parseInt(curr), meas: parseInt(curr) > prev.depth ? prev.meas + 1 : prev.meas};
+                    const depths = res.split('\n').map(d => parseInt(d));
+                    let inc = 0;
+                    for (let i = 1; i < depths.length; i++) {
+                        if (depths[i] > depths[i - 1]) {
+                            inc += 1;
                         }
-                    }, {depth: -1, meas: 0}).meas;
-                    setMeasurements(meas);
+                    }
+                    setIncreases(inc);
+                    let sli = 0;
+                    for (let i = 1; i < depths.length - 2; i++) {
+                        if (depths[i] + depths[i + 1] + depths[i + 2] > depths[i - 1] + depths[i] + depths[i + 1]) {
+                            sli += 1;
+                        }
+                    }
+                    setWindows(sli);
+                    setLoaded(true);
+
                 },
                 error => {
-                    setLoaded(true);
                     setError(error);
+                    setLoaded(true);
                 }
             );
     }, []);
@@ -46,7 +54,8 @@ const Day1 = ({title}) => {
         return (
             <>
                 <h2>{title}</h2>
-                <p>Number of measurement increases: <strong>{measurements}</strong></p>
+                <p>Number of measurement increases: <strong>{increases}</strong></p>
+                <p>Number of sliding window increases: <strong>{windows}</strong></p>
             </>
         );
     }
