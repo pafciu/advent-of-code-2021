@@ -34,7 +34,6 @@ const Day2 = ({title}) => {
             depth = 0;
             let aim = 0;
             for (let c of commands) {
-                console.log(c[1], c[2]);
                 switch (c[1]) {
                     case 'forward':
                         horizontal += parseInt(c[2]);
